@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table Creator</title>
+</head>
+<body>
+    <label>Rows: <input type="number" id="rows" min="1" value="3"></label>
+    <label>Columns: <input type="number" id="cols" min="1" value="3"></label>
+    <button onclick="generateTable()">Generate Table</button>
+    <div id="tableContainer"></div>
 
+    <script>
+        function generateTable() {
+            const rowCount = document.getElementById("rows").value;
+            const colCount = document.getElementById("cols").value;
+            const container = document.getElementById("tableContainer");
+            container.innerHTML = "";
+            
+            const table = document.createElement("table");
+            table.border = "1";
+            
+            for (let i = 0; i < rowCount; i++) {
+                const row = table.insertRow();
+                for (let j = 0; j < colCount; j++) {
+                    const cell = row.insertCell();
+                    cell.textContent = `(${i + 1},${j + 1})`;
+                }
+                
+              
+                const deleteCell = row.insertCell();
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete Row";
+                deleteButton.onclick = () => row.remove();
+                deleteCell.appendChild(deleteButton);
+            }
+            
+        
+            const colDeleteRow = table.insertRow();
+            for (let j = 0; j < colCount; j++) {
+                const deleteCell = colDeleteRow.insertCell();
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete Col";
+                deleteButton.onclick = () => deleteColumn(j);
+                deleteCell.appendChild(deleteButton);
+            }
+            
+            container.appendChild(table);
+        }
+        
+        function deleteColumn(colIndex) {
+            const table = document.querySelector("table");
+            for (let row of table.rows) {
+                if (row.cells.length > colIndex) {
+                    row.deleteCell(colIndex);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
